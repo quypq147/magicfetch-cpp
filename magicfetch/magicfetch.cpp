@@ -25,6 +25,14 @@ std::wstring getusername()
 	std::wstring userstring = username;
 	return userstring;
 }
+std::wstring gethostname()
+{
+	TCHAR hostname[MAX_COMPUTERNAME_LENGTH + 1];
+	DWORD size = MAX_COMPUTERNAME_LENGTH + 1;
+	GetComputerName((TCHAR*)hostname, &size);
+	std::wstring hoststring = hostname;
+	return hoststring;
+}
 std::wstring getcomputername()
 {
 	TCHAR computername[MAX_COMPUTERNAME_LENGTH + 1];
@@ -54,8 +62,10 @@ std::wstring getwiner()
 
 		auto car_bomb = key->GetString(L"ProductName");
 
+
 		bool win11 = true;
-		std::wstring ws = key->GetString(L"CurrentBuild");
+		std::wstring ws = key->GetString(L"DisplayVersion");
+
 		int build = std::stoi(ws);
 		if (build > 21999)
 		{
@@ -64,12 +74,8 @@ std::wstring getwiner()
 		else {
 			win11 = false;
 		}
-		if (win11 == true)
-		{
-			car_bomb = L"Windows 11";
-		}
-		else {}
-		return car_bomb;
+		std::wstring result = car_bomb + L"(OS Version " + ws + L")";
+		return result;
 	}
 	catch (const std::exception& e)
 	{
@@ -83,6 +89,7 @@ std::wstring getwinbuild()
 		auto key = Registry::LocalMachine->Open(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion");
 
 		auto buildnum = key->GetString(L"CurrentBuildNumber");
+
 
 		return buildnum;
 	}
@@ -107,40 +114,53 @@ std::wstring getcpu()
 		cpu = L"Unknow";
 	}
 }
-ULONGLONG getraminfo(ULONGLONG* totalMemory, ULONGLONG* avaiMemory)
+ULONGLONG getraminfo(ULONGLONG totalMemory, ULONGLONG avaiMemory)
 {
 	MEMORYSTATUSEX mem;
 	mem.dwLength = sizeof(mem);
 	
-	if (GlobalMemoryStatusEx(&mem))
+	GlobalMemoryStatusEx(&mem);
+	
+	if (totalMemory)
+	{
+		totalMemory = mem.ullTotalPhys / 1048576;
+		return totalMemory;
+	}
+	if (avaiMemory)
+	{
+		avaiMemory = totalMemory - (mem.ullAvailPhys / 1048576);
+		return avaiMemory;
+	}
+	
+	/*if (GlobalMemoryStatusEx(&mem))
 	{
 		if (totalMemory)
 		{
-			*totalMemory = mem.ullTotalPhys;
+			*totalMemory = mem.ullTotalPhys / 1048576;
 			return *totalMemory;
 		}
 		if (avaiMemory)
 		{
-			*avaiMemory = mem.ullAvailPhys;
+			*avaiMemory = *totalMemory - (mem.ullAvailPhys / 1048576);
 			return *avaiMemory;
 		}
 	}
 	else {
 		printf("Error: %d\n", GetLastError());
-	}
+	}*/
 }
 std::wstring getram()
 {
 	ULONGLONG totalMem = 0;
 	ULONGLONG avaiMem = 0;
 
-	getraminfo(&totalMem, &avaiMem);
+	getraminfo(totalMem, avaiMem);
 
 	ULONGLONG usedMem = totalMem - avaiMem;
 	
 	
 
-	std::wstring ram = L"Used Ram: " + std::to_wstring(usedMem) + L" / " + L"Total Ram: " + std::to_wstring(totalMem) + L" Bytes";
+	std::wstring ram = L"Memory: " + std::to_wstring(usedMem) + L" / " + L"Total Ram: " + std::to_wstring(totalMem) + L" Bytes";
 	return ram;
 }
 std::wstring getgpu()
@@ -164,10 +184,10 @@ std::wstring getresolution()
 }
 void magicfetch()
 {
-	std::wcout << L"Username: " << getusername() << std::endl;
-	std::wcout << L"Computername: " << getcomputername() << std::endl;
-	std::wcout << L"Win: " << getwiner() << std::endl;
-	std::wcout << L"Win build version: " << getwinbuild() << std::endl;
+	std::wcout << std::setw(10) << getusername() << "@" << gethostname() << std::endl;
+	std::wcout <<"-------------------------------------" << std::endl;
+	std::wcout << L"OS: " << getwiner() << std::endl;
+	std::wcout << L"Build: " << getwinbuild() << std::endl;
 	std::wcout << L"CPU: " << getcpu() << std::endl;
 	std::wcout << L"GPU: " << getgpu() << std::endl;
 	std::wcout << getram() << std::endl;
