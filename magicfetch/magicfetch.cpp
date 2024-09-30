@@ -119,53 +119,58 @@ std::wstring getcpu()
 		cpu = L"Unknow";
 	}
 }
-ULONGLONG getraminfo(ULONGLONG totalMemory, ULONGLONG avaiMemory)
+//ULONGLONG getraminfo(ULONGLONG totalMemory, ULONGLONG avaiMemory)
+//{
+//	MEMORYSTATUSEX mem;
+//	mem.dwLength = sizeof(mem);
+//	
+//	GlobalMemoryStatusEx(&mem);
+//	
+//	if (totalMemory)
+//	{
+//		totalMemory = mem.ullTotalPhys / 1048576;
+//		return totalMemory;
+//	}
+//	if (avaiMemory)
+//	{
+//		avaiMemory = totalMemory - (mem.ullAvailPhys / 1048576);
+//		return avaiMemory;
+//	}
+//	
+//	/*if (GlobalMemoryStatusEx(&mem))
+//	{
+//		if (totalMemory)
+//		{
+//			*totalMemory = mem.ullTotalPhys / 1048576;
+//			return *totalMemory;
+//		}
+//		if (avaiMemory)
+//		{
+//			*avaiMemory = *totalMemory - (mem.ullAvailPhys / 1048576);
+//			return *avaiMemory;
+//		}
+//	}
+//	else {
+//		printf("Error: %d\n", GetLastError());
+//	}*/
+//}
+std::wstring getram()
 {
 	MEMORYSTATUSEX mem;
 	mem.dwLength = sizeof(mem);
-	
-	GlobalMemoryStatusEx(&mem);
-	
-	if (totalMemory)
-	{
-		totalMemory = mem.ullTotalPhys / 1048576;
-		return totalMemory;
-	}
-	if (avaiMemory)
-	{
-		avaiMemory = totalMemory - (mem.ullAvailPhys / 1048576);
-		return avaiMemory;
-	}
-	
-	/*if (GlobalMemoryStatusEx(&mem))
-	{
-		if (totalMemory)
-		{
-			*totalMemory = mem.ullTotalPhys / 1048576;
-			return *totalMemory;
-		}
-		if (avaiMemory)
-		{
-			*avaiMemory = *totalMemory - (mem.ullAvailPhys / 1048576);
-			return *avaiMemory;
-		}
-	}
-	else {
-		printf("Error: %d\n", GetLastError());
-	}*/
-}
-std::wstring getram()
-{
-	ULONGLONG totalMem = 0;
-	ULONGLONG avaiMem = 0;
 
-	getraminfo(totalMem, avaiMem);
+	GlobalMemoryStatusEx(&mem);
+
+	ULONGLONG totalMem = (mem.ullTotalPhys)* 0.000000001;
+	ULONGLONG avaiMem = (mem.ullAvailPhys)* 0.000000001;
+
+	
 
 	ULONGLONG usedMem = totalMem - avaiMem;
 	
 	
 
-	std::wstring ram = L"Memory: " + std::to_wstring(usedMem) + L" / " + std::to_wstring(totalMem);
+	std::wstring ram = L"Memory:" + std::to_wstring(usedMem) + L"/" + std::to_wstring(totalMem) + L"Gb";
 	return ram;
 }
 std::wstring getgpu()
