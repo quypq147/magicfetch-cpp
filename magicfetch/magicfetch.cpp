@@ -12,6 +12,11 @@
 #include <iostream>
 
 
+//set light color = pink
+#define setLclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15)
+//set dark color = black
+#define setDclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8)
+
 #pragma comment(lib, "wbemuuid.lib")
 #pragma commnet(lib, "user32.lib")
 
@@ -160,7 +165,7 @@ std::wstring getram()
 	
 	
 
-	std::wstring ram = L"Memory: " + std::to_wstring(usedMem) + L" / " + L"Total Ram: " + std::to_wstring(totalMem) + L" Bytes";
+	std::wstring ram = L"Memory: " + std::to_wstring(usedMem) + L" / " + std::to_wstring(totalMem);
 	return ram;
 }
 std::wstring getgpu()
@@ -184,8 +189,8 @@ std::wstring getresolution()
 }
 void magicfetch()
 {
-	std::wcout << std::setw(10) << getusername() << "@" << gethostname() << std::endl;
-	std::wcout <<"-------------------------------------" << std::endl;
+	std::wcout << getusername() << "@" << gethostname() << std::endl;
+	std::wcout <<"- - - - - - - - - -" << std::endl;
 	std::wcout << L"OS: " << getwiner() << std::endl;
 	std::wcout << L"Build: " << getwinbuild() << std::endl;
 	std::wcout << L"CPU: " << getcpu() << std::endl;
