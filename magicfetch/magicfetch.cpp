@@ -12,10 +12,10 @@
 #include <iostream>
 
 
-//set light color = pink
-#define setLclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15)
-//set dark color = black
-#define setDclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8)
+// Light color = Light Magenta (pink-ish)
+#define setLclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13) // Light Magenta
+// Dark color = Dark Purple
+#define setDclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5) // Dark Purple
 
 #pragma comment(lib, "wbemuuid.lib")
 #pragma commnet(lib, "user32.lib")
@@ -206,27 +206,29 @@ void magicfetch()
 }
 int main()
 {
-	magicfetch();
-	std::wcout << win10art01 << std::setw(5) << std::endl;
-	std::wcout << win10art02 << std::setw(5) << std::endl;
-	std::wcout << win10art03 << std::setw(5) << std::endl;
-	std::wcout << win10art04 << std::setw(5) << std::endl;
-	std::wcout << win10art05 << std::setw(5) << std::endl;
-	std::wcout << win10art06 << std::setw(5) << std::endl;
-	std::wcout << win10art07 << std::setw(5) << std::endl;
-	std::wcout << win10art08 << std::setw(5) << std::endl;
-	std::wcout << win10art09 << std::setw(5) << std::endl;
-	std::wcout << win10art10 << std::setw(5) << std::endl;
-	std::wcout << win10art11 << std::setw(5) << std::endl;
-	std::wcout << win10art12 << std::setw(5) << std::endl;
-	std::wcout << win10art13 << std::setw(5) << std::endl;
-	std::wcout << win10art14 << std::setw(5) << std::endl;
-	std::wcout << win10art15 << std::setw(5) << std::endl;
-	std::wcout << win10art16 << std::setw(5) << std::endl;
-	std::wcout << win10art17 << std::setw(5) << std::endl;
-	std::wcout << win10art18 << std::setw(5) << std::endl;
-	std::wcout << win10art19 << std::setw(5) << std::endl;
-	std::wcout << win10art20 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art01 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art02 << std::setw(5) << getusername() << "@" << gethostname() << std::endl;
+	setLclr; std::wcout << win10art03 << std::setw(22) << "- - - - - - - - - -" << std::endl;
+	setLclr; std::wcout << win10art04 << std::setw(7) << L"OS: " << getwiner() << std::endl;
+	setLclr; std::wcout << win10art05 << std::setw(10) << L"Build: " << getwinbuild() << std::endl;
+	setLclr; std::wcout << win10art06 << std::setw(8) << L"CPU: " << getcpu() << std::endl;
+	setLclr; std::wcout << win10art07 << std::setw(8) << L"GPU: " << getgpu() << std::endl;
+	setLclr; std::wcout << win10art08 << std::setw(16) << getram() << std::endl;
+	setLclr; std::wcout << win10art09 << std::setw(15) << L"Resolution: " << getresolution() << std::endl;
+	setLclr; std::wcout << win10art10 << std::setw(12) << "Up time: " << getuptime() << std::endl;
+	setLclr; std::wcout << win10art11 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art12 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art13 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art14 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art15 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art16 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art17 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art18 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art19 << std::setw(5) << std::endl;
+	setLclr; std::wcout << win10art20 << std::setw(5) << std::endl;
+
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
 
 	std::cout << "Ctrl + C to Exit this program..." << std::endl;
