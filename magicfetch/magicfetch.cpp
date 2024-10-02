@@ -10,7 +10,9 @@
 #include <Wbemidl.h>
 #include <stdio.h>
 #include <iostream>
-
+#include <locale>
+#include <sstream>
+#include <string>
 
 // Light color = Light Magenta (pink-ish)
 #define setLclr SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13) // Light Magenta
@@ -49,7 +51,7 @@ std::wstring getcomputername()
 std::wstring getuptime()
 {
 	auto uptime = GetTickCount64();
-	auto hour = uptime / 360000;
+	auto hour = uptime / 3600000;
 	auto minute = (uptime / 360000) /6000;
 	auto seconds = (uptime % 60000) / 1000;
 	
@@ -67,18 +69,7 @@ std::wstring getwiner()
 
 		auto car_bomb = key->GetString(L"ProductName");
 
-
-		bool win11 = true;
 		std::wstring ws = key->GetString(L"DisplayVersion");
-
-		int build = std::stoi(ws);
-		if (build > 21999)
-		{
-			win11 = true;
-		}
-		else {
-			win11 = false;
-		}
 		std::wstring result = car_bomb + L"(OS Version " + ws + L")";
 		return result;
 	}
@@ -86,6 +77,29 @@ std::wstring getwiner()
 	{
 		winver = L"Unknow";
 	}
+}
+int CheckWin()
+{
+	using namespace m4x1m1l14n;
+	int iswin11 = 1;
+		try {
+			auto key = Registry::LocalMachine->Open(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion");
+			auto currentBuild = key->GetString(L"CurrentBuildNumber");
+			int build = std::stoi(currentBuild);
+			if (build < 22000)
+			{
+				iswin11 = 0;
+			}
+			else
+			{
+				iswin11 = 1;
+			}
+			
+		}
+		catch (const std::exception& e)
+		{
+			return 0;
+		}
 }
 std::wstring getwinbuild()
 {
@@ -154,6 +168,7 @@ std::wstring getcpu()
 //		printf("Error: %d\n", GetLastError());
 //	}*/
 //}
+
 std::wstring getram()
 {
 	MEMORYSTATUSEX mem;
@@ -161,17 +176,17 @@ std::wstring getram()
 
 	GlobalMemoryStatusEx(&mem);
 
-	ULONGLONG totalMem = (mem.ullTotalPhys)* 0.000000001;
-	ULONGLONG avaiMem = (mem.ullAvailPhys)* 0.000000001;
+	float totalMem = static_cast<float>((mem.ullTotalPhys)* 0.000000001);
+	float avaiMem = static_cast<float>((mem.ullAvailPhys)* 0.000000001);
 
 	
 
-	ULONGLONG usedMem = totalMem - avaiMem;
-	
-	
+	float usedMem = totalMem - avaiMem;
 
-	std::wstring ram = L"Memory:" + std::to_wstring(usedMem) + L"/" + std::to_wstring(totalMem) + L"Gb";
-	return ram;
+	/*std::wstring ram = L"Memory:" + std::to_wstring(usedMem) + L"/" + std::to_wstring(totalMem) + L" GB";*/
+	std::wstringstream TestRun;
+	TestRun << L"Memory: " << std::fixed << std::setprecision(2) << usedMem << L"/" << totalMem << L" GB";
+	return TestRun.str();
 }
 std::wstring getgpu()
 {
@@ -192,6 +207,7 @@ std::wstring getresolution()
 	int height = GetSystemMetrics(SM_CYSCREEN);
 	return std::to_wstring(width) + L"x" + std::to_wstring(height);
 }
+//to debug
 void magicfetch()
 {
 	std::wcout << getusername() << "@" << gethostname() << std::endl;
@@ -206,6 +222,7 @@ void magicfetch()
 }
 int main()
 {
+	SetConsoleTitle(L"MagicFetch"); 
 	setLclr; std::wcout << win10art01 << std::setw(5) << std::endl;
 	setLclr; std::wcout << win10art02 << std::setw(5) << getusername() << "@" << gethostname() << std::endl;
 	setLclr; std::wcout << win10art03 << std::setw(22) << "- - - - - - - - - -" << std::endl;
@@ -213,7 +230,7 @@ int main()
 	setLclr; std::wcout << win10art05 << std::setw(10) << L"Build: " << getwinbuild() << std::endl;
 	setLclr; std::wcout << win10art06 << std::setw(8) << L"CPU: " << getcpu() << std::endl;
 	setLclr; std::wcout << win10art07 << std::setw(8) << L"GPU: " << getgpu() << std::endl;
-	setLclr; std::wcout << win10art08 << std::setw(16) << getram() << std::endl;
+	setLclr; std::wcout << win10art08 << std::setw(24)	<< getram() << std::endl;
 	setLclr; std::wcout << win10art09 << std::setw(15) << L"Resolution: " << getresolution() << std::endl;
 	setLclr; std::wcout << win10art10 << std::setw(12) << "Up time: " << getuptime() << std::endl;
 	setLclr; std::wcout << win10art11 << std::setw(5) << std::endl;
