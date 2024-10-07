@@ -52,7 +52,7 @@ std::wstring getuptime()
 {
 	auto uptime = GetTickCount64();
 	auto hour = uptime / 3600000;
-	auto minute = (uptime / 360000) /6000;
+	auto minute = (uptime % 3600000) / 60000;
 	auto seconds = (uptime % 60000) / 1000;
 	
 	std::wstring ms = std::to_wstring(hour) + L" Hours " + std::to_wstring(minute) + L" Minutes " + std::to_wstring(seconds) + L" Seconds";
