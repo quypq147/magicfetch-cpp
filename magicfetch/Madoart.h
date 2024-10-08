@@ -22,8 +22,8 @@ const std::wstring win10art19 = L"                       ````''*::cll";         
 const std::wstring win10art20 = L"                                 ``";
 
 
-const std::wstring win11art01 = L"                                ..,";
-const std::wstring win11art02 = L"                                ..,";
+const std::wstring win11art01 = L"    .;;                         ..,";
+const std::wstring win11art02 = L"   lddO.                        ..,";
 const std::wstring win11art03 = L"                                ..,";
 const std::wstring win11art04 = L"                                ..,";
 const std::wstring win11art05 = L"                                ..,";
@@ -42,3 +42,4 @@ const std::wstring win11art17 = L"                                ..,";
 const std::wstring win11art18 = L"                                ..,";
 const std::wstring win11art19 = L"                                ..,";
 const std::wstring win11art20 = L"                                ..,";
+
