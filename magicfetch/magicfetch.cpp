@@ -205,7 +205,20 @@ std::wstring getresolution()
 {
 	int width = GetSystemMetrics(SM_CXSCREEN);
 	int height = GetSystemMetrics(SM_CYSCREEN);
-	return std::to_wstring(width) + L"x" + std::to_wstring(height);
+	int hz = GetDeviceCaps(GetDC(NULL), VREFRESH);
+	return std::to_wstring(width) + L" x " + std::to_wstring(height) + L" - " + std::to_wstring(hz) + L"hz";
+}
+std::wstring getdisk()
+{
+	ULARGE_INTEGER FreeBytesAvailable;
+
+	float progress = 0.0;
+	while (progress < 1.0)
+	{
+		int barWidth = 70;
+		std::wcout << L"[";
+
+	}
 }
 //to debug
 void magicfetch()
@@ -230,7 +243,7 @@ int main()
 	setLclr; std::wcout << win10art05 << std::setw(10) << L"Build: " << getwinbuild() << std::endl;
 	setLclr; std::wcout << win10art06 << std::setw(8) << L"CPU: " << getcpu() << std::endl;
 	setLclr; std::wcout << win10art07 << std::setw(8) << L"GPU: " << getgpu() << std::endl;
-	setLclr; std::wcout << win10art08 << std::setw(24)	<< getram() << std::endl;
+	setLclr; std::wcout << win10art08 << std::setw(25)	<< getram() << std::endl;
 	setLclr; std::wcout << win10art09 << std::setw(15) << L"Resolution: " << getresolution() << std::endl;
 	setLclr; std::wcout << win10art10 << std::setw(12) << "Up time: " << getuptime() << std::endl;
 	setLclr; std::wcout << win10art11 << std::setw(5) << std::endl;
